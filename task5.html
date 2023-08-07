@@ -1,0 +1,132 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Form and Table Example</title>
+    <link rel="stylesheet" href="style1.css">
+    
+</head>
+
+<body>
+    <script type="text/javascript"  src="/script.js"></script>
+    <div class="border">
+        <h5 style="color:white;padding-top: 5px;">Add Employee</h5>
+        <div class="container">
+            <form action="#" id="dataForm">
+                <div class="row">
+                    <div class="col-25">
+                        <label for="fname">Name</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="text" id="name" required><br>
+                        <span id="validateName" style="color: red;"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-25">
+                        <label for="fname">Gender:</label>
+                    </div>
+                    <div class="col-75">
+                        Male: <input type="radio" name="txtgender" id="txtgender1" value="Male" checked>
+                        Female:<input type="radio" name="txtgender" id="txtgender2" value="Female">
+                    </div>
+                </div>
+                <br>
+                <div class="row">
+                    <div class="col-25">
+                        <label for="fname">Date of birth::</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="text" name="date" id="txtdob" placeholder="MM/DD/YYYY" />
+                        <span id="validatedate" style="color: red;"></span>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-25">
+                        <label for="fname">Email:</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="email" id="txtemail" value="" required><br />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-25">
+                        <label for="fname">Phone:</label>
+                    </div>
+                    <div class="col-75">
+                        <input type="number" id="contactNumber" value="" minlength="10" maxlength="10"><br />
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-25">
+                        <label for="fname">Hobbies:</label>
+                    </div>
+                    <div class="col-75">
+                        Cricket <input type="checkbox" value="Cricket" id="hobby1" class="txtcricket"
+                            name="hobby"><br />
+                        Chess <input type="checkbox" value="Chess" id="hobby2" class="txtchess" name="hobby"><br />
+                        Music <input type="checkbox" class="txtmusic" value="Music" id="hobby3" name="hobby"><br />
+                    </div>
+                </div>
+
+
+                <div class="row">
+                    <input type="submit" value="submit" id="btnsave" onclick="addEntry();return false">
+                    <input type="submit" value="update" id="btnupdate" style="display:none"
+                        onclick="editRow();return false">
+                </div>
+                <input type="hidden" value="" id="txtid">
+            </form>
+        </div>
+    </div>
+
+    <h2>
+        <center>Basic</center>
+    </h2>
+    <div class="border">
+        <h5 style="color:white;padding-top: 3px;">Display</h5>
+        <div class="container">
+            <table id="dataTable" border="10">
+                <tr>
+                    <th>Name</th>
+                    <th>Gender</th>
+                    <th>DOB</th>
+                    <th>Email</th>
+                    <th>Phone</th>
+                    <th>Hobbies</th>
+                    <th>Actions</th>
+                </tr>
+                <!-- <tr id="noDataAvailable">
+                    <td colspan="7"><center>No data available.</center></td>
+                </tr> -->
+            </table>
+            <p id="noData" style="display:none;">No data available.</p>
+        </div>
+    </div>
+
+
+    <h2>
+        <center>Advanced</center>
+    </h2>
+    <div class="border">
+        <h5 style="color:white;padding-top: 3px;">Display</h5>
+        <div class="container">
+            <table id="advancedTable" border="10">
+                <tr>
+                    <th>Attribute</th>
+                </tr>
+            </table>
+            <p id="noDataAdvanced" style="display: none;">No data available.</p>
+
+        </div>
+    </div>
+   
+</body>
+
+</html>
