@@ -6,11 +6,11 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Form and Table Example</title>
     <link rel="stylesheet" href="style1.css">
-    
+    <script type="text/javascript"  src="script1.js"></script>
 </head>
 
 <body>
-    <script type="text/javascript"  src="/script.js"></script>
+    
     <div class="border">
         <h5 style="color:white;padding-top: 5px;">Add Employee</h5>
         <div class="container">
@@ -78,10 +78,10 @@
 
                 <div class="row">
                     <input type="submit" value="submit" id="btnsave" onclick="addEntry();return false">
-                    <input type="submit" value="update" id="btnupdate" style="display:none"
-                        onclick="editRow();return false">
+                  
                 </div>
-                <input type="hidden" value="" id="txtid">
+                <input type="hidden" value="" id="employeeId">
+                <input type="hidden" value="" id="storeUpdateId">
             </form>
         </div>
     </div>
@@ -118,8 +118,26 @@
         <h5 style="color:white;padding-top: 3px;">Display</h5>
         <div class="container">
             <table id="advancedTable" border="10">
-                <tr>
-                    <th>Attribute</th>
+                <tr id="nameField">
+                    <th>Name</th>
+                </tr>
+                <tr id="genderField">
+                    <th>Gender</th>
+                </tr>
+                <tr id="DOBfield">
+                    <th>DOB</th>
+                </tr>
+                <tr id="EmailField">
+                    <th>Email</th>
+                </tr>
+                <tr id="Phonefield">
+                    <th>Phone</th>
+                </tr>
+                <tr id="Hobbyfield">
+                    <th>Hobbies</th>
+                </tr>
+                <tr id="Actionfield">
+                    <th>Actions</th>
                 </tr>
             </table>
             <p id="noDataAdvanced" style="display: none;">No data available.</p>

@@ -1,73 +1,103 @@
 
 let currentEditRow = null;
 
-
+var counter=0;
 function addEntry() 
 {
-    const name = document.getElementById("name").value;
-    const gender = document.querySelector('input[name="txtgender"]:checked').value;
-    var dob = document.getElementById("txtdob").value;
-    const contactNumber = document.getElementById("contactNumber").value;
-    var email = document.getElementById("txtemail").value;
     const hobbies = [];
     if (document.getElementById("hobby1").checked) hobbies.push("Cricket");
     if (document.getElementById("hobby2").checked) hobbies.push("Chess");
     if (document.getElementById("hobby3").checked) hobbies.push("Music");
-    var resultName = validateField();
-    var resultDob = dateNotAllowed();
-    if (resultName && resultDob) {
-        const dataTable = document.getElementById("dataTable");
-        let newRow;
+    
+    const Employee =
+    {
+        id:counter++,
+        name: document.getElementById("name").value,
+        gender: document.querySelector('input[name="txtgender"]:checked').value,
+        dob: document.getElementById("txtdob").value,
+        contactNumber: document.getElementById("contactNumber").value,
+        email: document.getElementById("txtemail").value,
+        hobby: hobbies
+    }
+   
+    if(currentEditRow == null)
+    {
+        
+        var x = localStorage.length;
+        localStorage.setItem("emp"+ (x+1),JSON.stringify(Employee));
+        console.log("x is " + x);
+    }
+    else
+    {
+        localStorage.setItem('emp'+ Employee.id, Employee);
+    }
+    
+    displayBasicData(Employee);
 
-        if (currentEditRow) {
-            newRow = currentEditRow;
-            currentEditRow = null;
-        }
-        else {
-            //insert
-            newRow = dataTable.insertRow(dataTable.rows.length);
-        }
+    // updateAdvancedTable(Employee);
+    document.getElementById("dataForm").reset();
 
-        newRow.innerHTML = "";
+    updateTable();
+}
 
-        const nameCell = newRow.insertCell(0);
-        nameCell.textContent = name;
+function displayBasicData(Employee) 
+{
+    const dataTable = document.getElementById("dataTable");
+    let newRow;
 
-        const genderCell = newRow.insertCell(1);
-        genderCell.textContent = gender;
+    if (currentEditRow) 
+    {
+        newRow = currentEditRow;
+        currentEditRow = null;
+    }
+    else 
+    {
+        //insert
+        newRow = dataTable.insertRow(dataTable.rows.length);
+    }
 
-        const dobCell = newRow.insertCell(2);
-        const formatedob = formateDate(dob)
-        dobCell.textContent = formatedob;
+    newRow.innerHTML = "";
+    counter++;
+    alert(counter)
+    document.getElementById("txtid").value = counter+1;
 
-        const emailCell = newRow.insertCell(3);
-        emailCell.textContent = email;
+    
 
-        const contactCell = newRow.insertCell(4);
-        contactCell.textContent = contactNumber;
+    const nameCell = newRow.insertCell(0);
+    nameCell.textContent = Employee.name;
 
-        const hobbiesCell = newRow.insertCell(5);
-        hobbiesCell.textContent = hobbies.join(", ");
+    const genderCell = newRow.insertCell(1);
+    genderCell.textContent = Employee.gender;
 
-        const actionsCell = newRow.insertCell(6);
-        actionsCell.innerHTML =
-            '<button class="editBtn" onclick="editEntry(this)">Edit</button> <button class="deleteBtn" onclick="deleteEntry(this)">Delete</button>';
+    const dobCell = newRow.insertCell(2);
+    const formatedob = formateDate(Employee.dob)
+    dobCell.textContent = formatedob;
 
-        document.getElementById("name").value = "";
-        document.getElementById("contactNumber").value = "";
-        document.getElementById("txtdob").value = "";
-        document.getElementById("txtemail").value = "";
-        document.getElementById("hobby1").checked = false;
-        document.getElementById("hobby2").checked = false;
-        document.getElementById("hobby3").checked = false;
+    const emailCell = newRow.insertCell(3);
+    emailCell.textContent = Employee.email;
 
-        updateTable();
-        updateAdvancedTable();
+    const contactCell = newRow.insertCell(4);
+    contactCell.textContent = Employee.contactNumber;
+    
+    const hobbiesCell = newRow.insertCell(5);
+    hobbiesCell.textContent = Employee.hobby;
+
+    const actionsCell = newRow.insertCell(6);
+    actionsCell.innerHTML =
+        '<button class="editBtn" onclick="editEntry(this)">Edit</button> <button class="deleteBtn" onclick="deleteEntry(this)">Delete</button>';
+
+    
+    console.log("display all ");   
+    for (let i = 0; i < localStorage.length; i++) 
+    {
+        console.log(localStorage.getItem(localStorage.key(i)));
     }
 }
 
 /*insert data for advanced table*/
-function updateAdvancedTable() {
+let k = 1;
+function updateAdvancedTable(Employee) 
+{
     // document.getElementById("noDataAvailable").style.display = 'none';
     const noDataAdvanced = document.getElementById("noDataAdvanced");
     const advancedTable = document.getElementById("advancedTable");
@@ -86,48 +116,86 @@ function updateAdvancedTable() {
         advancedTable.innerHTML = "";
         const headerRow = advancedTable.insertRow(0);
         headerRow.insertCell(0).textContent = "Attribute";
-        for (let i = 1; i < dataTable.rows.length; i++) {
+        for (let i = 1; i < dataTable.rows.length; i++) 
+        {
             headerRow.insertCell(i).textContent = `Data${i}`;
         }
-        
+
         const attributes = ["Name", "Gender", "DOB", "Email", "Contact Number", "Hobbies", "Actions"];
-        for (let i = 0; i < attributes.length; i++) 
-        {
-            
-            console.log(attributes[i])
-            const newRow = advancedTable.insertRow(advancedTable.rows.length);
-            newRow.insertCell(0).textContent = attributes[i];
-            
-            for (let j = 1; j < dataTable.rows.length; j++) 
-            {
-                if (i != 6) 
-                {
-                    newRow.insertCell(j).textContent = dataTable.rows[j].cells[i].textContent;
-                } 
-                else 
-                {
-                    newRow.insertCell(j).innerHTML = `<button onclick="editFromAdvance(${j})">Edit</button> <button onclick="deleteFromAdvance(${j})">Delete</button>`;
-                }
-            }
-        }
+
+        const newRow = document.createElement('tr')
+        const namecell = document.createElement('td')
+        const gendercell = document.createElement('td')
+        
+        namecell.textContent = Employee.name
+        gendercell.textContent = Employee.gender
+
+        newRow.appendChild(namecell)
+        newRow.appendChild(gendercell)
+        advancedTable.appendChild(newRow)
+        // const value = [
+        //     Employee.name, Employee.gender, Employee.dob, Employee.contactNumber, Employee.email, Employee.hobbies
+        // ]
+
+        // const newRow = advancedTable.insertRow(i);
+        // i = 0;
+        // newRow.insertCell(i).textContent = attributes[i];
+        // k = 1;
+        // newRow.insertCell(k).textContent = Employee.name;
+
+        // i = 1;
+        // newRow.insertCell(i).textContent = attributes[i];
+        // newRow.insertCell(k).textContent = Employee.gender;
+        // for (let i = 0; i < value.length; i++)
+        // {
+        //     const newRow = advancedTable.insertRow(advancedTable.rows.length);
+        //     // newRow.insertCell(0).textContent = attributes[i];
+        //     k = 1;
+        //     newRow.insertCell(k).textContent = value[i];
+        // }
+
+
+
+        // for (let i = 0; i < attributes.length; i++) 
+        // {
+
+        //     console.log(attributes[i])
+        //     const newRow = advancedTable.insertRow(advancedTable.rows.length);
+        //     newRow.insertCell(0).textContent = attributes[i];
+
+        //     for (let j = 1; j < dataTable.rows.length; j++) 
+        //     {
+        //         if (i != 6) 
+        //         {
+        //             newRow.insertCell(j).textContent = dataTable.rows[j].cells[i].textContent;
+        //         } 
+        //         else 
+        //         {
+        //             newRow.insertCell(j).innerHTML = `<button onclick="editFromAdvance(${j})">Edit</button> <button onclick="deleteFromAdvance(${j})">Delete</button>`;
+        //         }
+        //     }
+        // }
     }
 }
 
-function editFromAdvance(rowNum) {
+function editFromAdvance(rowNum) 
+{
     const dataTable = document.getElementById("dataTable");
     var row = dataTable.rows[rowNum];
     var btn = row.querySelector(".editBtn");
     btn.click();
 }
 
-function deleteFromAdvance(rowNum) {
+function deleteFromAdvance(rowNum) 
+{
     const dataTable = document.getElementById("dataTable");
     var row = dataTable.rows[rowNum];
     var btn = row.querySelector(".deleteBtn");
     btn.click();
 }
 
-function editEntry(button) {
+function editEntry(button) 
+{
     const row = button.parentNode.parentNode;
     const name = row.cells[0].textContent;
     const gender = row.cells[1].textContent;
@@ -141,10 +209,12 @@ function editEntry(button) {
     document.getElementById("txtdob").value = dob;
     document.getElementById("txtemail").value = email;
 
-    if (gender == 'Male') {
+    if (gender == 'Male') 
+    {
         document.getElementById('txtgender1').checked = true;
     }
-    else {
+    else
+    {
         document.getElementById('txtgender2').checked = true;
     }
 
@@ -155,15 +225,23 @@ function editEntry(button) {
     currentEditRow = row;
 }
 
-function deleteEntry(button) {
+function deleteEntry(button) 
+{
+   
     const row = button.parentNode.parentNode;
     row.remove();
-
+    var email = localStorage.key("email");
+    console.log(localStorage.removeItem(email));
+    for (let i = 0; i < localStorage.length; i++) 
+    {
+        console.log(localStorage.getItem(localStorage.key(i)));
+    }
     updateTable();
     updateAdvancedTable();
 }
 
-function updateTable() {
+function updateTable() 
+{
     const noData = document.getElementById("noData");
     const dataTable = document.getElementById("dataTable");
 
@@ -179,11 +257,13 @@ function updateTable() {
 
 window.onload = NoData();
 
-function NoData() {
+function NoData() 
+{
     updateTable();
 }
 
-function dateNotAllowed() {
+function dateNotAllowed() 
+{
     const dob = document.getElementById("txtdob").value;
     const dateRegex = /^(0?[1-9]|1[0-2])\/(0?[1-9]|[12]\d|3[01])\/(19|20)\d{2}$/;
     if (!dateRegex.test(dob)) {
